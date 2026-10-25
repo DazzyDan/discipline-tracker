@@ -1,3 +1,14 @@
 {
-  "sessions": []
+  "sessions": [
+    {
+      "id": "s_1792960119397",
+      "taskId": "t_sample1",
+      "date": "2026-10-25",
+      "startedAt": "2026-10-25T20:23:39.397Z",
+      "minutes": 5,
+      "type": "ritual5min",
+      "rounds": 1,
+      "note": ""
+    }
+  ]
 }
