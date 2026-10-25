@@ -1,0 +1,38 @@
+.heatmap-wrap {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.heatmap-wrap svg rect {
+  fill: var(--border);
+}
+
+.heatmap-wrap svg rect.heat-level-0 { fill: var(--border); }
+.heatmap-wrap svg rect.heat-level-1 { fill: #1b3a2a; }
+.heatmap-wrap svg rect.heat-level-2 { fill: #2a6b45; }
+.heatmap-wrap svg rect.heat-level-3 { fill: #3fa863; }
+.heatmap-wrap svg rect.heat-level-4 { fill: #56d47f; }
+
+@media (prefers-color-scheme: light) {
+  .heatmap-wrap svg rect.heat-level-0 { fill: var(--border); }
+  .heatmap-wrap svg rect.heat-level-1 { fill: #c7e8d1; }
+  .heatmap-wrap svg rect.heat-level-2 { fill: #8fd3a3; }
+  .heatmap-wrap svg rect.heat-level-3 { fill: #4fb876; }
+  .heatmap-wrap svg rect.heat-level-4 { fill: #239852; }
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.heatmap-legend .swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  display: inline-block;
+}

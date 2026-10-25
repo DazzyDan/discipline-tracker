@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log — Discipline Tracker</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/heatmap.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html">Vision</a>
+    <a href="tracker.html">Tracker</a>
+    <a href="ritual.html">Start</a>
+    <a href="log.html" class="active">Log</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+
+  <main>
+    <h1>Public log</h1>
+    <p class="text-dim text-small">This page is always read-only, for anyone with the link — think of it as a public commitment log.</p>
+    <div id="stats" class="card"></div>
+    <div class="heatmap-wrap"><div id="heatmap">Loading…</div></div>
+    <div class="heatmap-legend">
+      Less
+      <span class="swatch heat-level-0"></span>
+      <span class="swatch heat-level-1"></span>
+      <span class="swatch heat-level-2"></span>
+      <span class="swatch heat-level-3"></span>
+      <span class="swatch heat-level-4"></span>
+      More
+    </div>
+  </main>
+
+  <script src="js/store.js"></script>
+  <script src="js/date-utils.js"></script>
+  <script src="js/rollup.js"></script>
+  <script src="js/heatmap.js"></script>
+  <script src="js/log.js"></script>
+</body>
+</html>

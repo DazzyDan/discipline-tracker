@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings — Discipline Tracker</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html">Vision</a>
+    <a href="tracker.html">Tracker</a>
+    <a href="ritual.html">Start</a>
+    <a href="log.html">Log</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="settings.html" class="active">Settings</a>
+  </nav>
+
+  <main>
+    <h1>Settings</h1>
+
+    <div class="card">
+      <h3>Edit access</h3>
+      <p class="text-small text-dim">
+        Generate a fine-grained GitHub Personal Access Token scoped to <em>only this repo</em>,
+        with Repository permissions → Contents: Read and write, nothing else. It's stored only
+        in this browser's local storage — never committed, never sent anywhere but GitHub's API.
+      </p>
+      <label>Personal access token</label>
+      <input type="password" id="tokenInput" placeholder="github_pat_...">
+      <button id="saveTokenBtn" class="btn">Save</button>
+      <button id="verifyBtn" class="btn btn-secondary">Verify</button>
+      <button id="clearTokenBtn" class="btn btn-danger">Clear</button>
+      <p id="tokenStatus" class="text-small" style="margin-top:8px"></p>
+    </div>
+
+    <div class="card">
+      <h3>Pre-task checklist</h3>
+      <p class="text-small text-dim">Shown before every "Start" ritual. Edit the items below, one per line.</p>
+      <form id="checklistForm">
+        <textarea id="checklistItems" rows="5"></textarea>
+        <button type="submit" class="btn" data-requires-token>Save checklist</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Vision wall images</h3>
+      <p class="text-small text-dim">
+        First, add your image files to <code>images/vision/</code> via a normal git commit or the GitHub
+        web UI's upload. Then list them here, one per line, as <code>path | caption</code>.
+      </p>
+      <form id="visionForm">
+        <textarea id="visionItems" rows="6" placeholder="images/vision/goal-01.jpg | Marathon finish line"></textarea>
+        <button type="submit" class="btn" data-requires-token>Save vision list</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/github-api.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

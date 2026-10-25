@@ -1,0 +1,16 @@
+{
+  "checklists": {
+    "default": {
+      "label": "Standard pre-task checklist",
+      "items": [
+        "Phone in another room",
+        "Water poured",
+        "Close extra browser tabs",
+        "Read the first step out loud"
+      ]
+    }
+  },
+  "vision": {
+    "images": []
+  }
+}

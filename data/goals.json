@@ -1,0 +1,41 @@
+{
+  "goals": [
+    {
+      "id": "y2026",
+      "level": "year",
+      "period": "2026",
+      "parentId": null,
+      "title": "Sample: become the person on your vision wall",
+      "plannedHours": 500
+    },
+    {
+      "id": "m2026-10",
+      "level": "month",
+      "period": "2026-10",
+      "parentId": "y2026",
+      "title": "Sample: build the discipline tracker and start using it daily",
+      "plannedHours": 20
+    },
+    {
+      "id": "w2026-W43",
+      "level": "week",
+      "period": "2026-W43",
+      "parentId": "m2026-10",
+      "title": "Sample: get the site live and log the first real sessions",
+      "plannedHours": 5
+    },
+    {
+      "id": "t_sample1",
+      "level": "day",
+      "period": "2026-10-25",
+      "parentId": "w2026-W43",
+      "title": "Sample task: edit this file (or use Settings once it's built) to add your real tasks",
+      "firstStep": "Open data/goals.json and change this title",
+      "checklistId": "default",
+      "plannedMinutes": 30,
+      "status": "not_started",
+      "createdAt": "2026-10-25T00:00:00Z",
+      "completedAt": null
+    }
+  ]
+}
