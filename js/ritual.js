@@ -31,9 +31,14 @@ function renderTaskPicker() {
     return;
   }
   tasks.forEach((t) => {
+    const tagsHtml = (t.tags || []).map((key) => {
+      const tag = CONFIG.tags && CONFIG.tags[key];
+      if (!tag) return '';
+      return `<span class="tag-chip" style="background:${tag.color}">${tag.label}</span>`;
+    }).join('');
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `<strong>${t.title}</strong><div class="text-small text-dim">${t.period}</div>`;
+    card.innerHTML = `<strong>${t.title}</strong>${tagsHtml ? `<div>${tagsHtml}</div>` : ''}<div class="text-small text-dim">${t.period}</div>`;
     const btn = document.createElement('a');
     btn.className = 'btn';
     btn.href = `ritual.html?taskId=${encodeURIComponent(t.id)}`;

@@ -36,6 +36,8 @@ async function loadIntoForms() {
   try {
     const config = await window.Store.readData('data/config.json');
     document.getElementById('checklistItems').value = (config.checklists.default.items || []).join('\n');
+    document.getElementById('tagsItems').value = Object.entries(config.tags || {})
+      .map(([key, tag]) => `${key} | ${tag.label} | ${tag.color}`).join('\n');
     document.getElementById('visionItems').value = (config.vision.images || [])
       .map((img) => `${img.src} | ${img.caption || ''}`).join('\n');
   } catch (err) {
@@ -51,6 +53,24 @@ document.getElementById('checklistForm').addEventListener('submit', async (e) =>
     config.checklists.default.items = items;
     await window.Store.writeData('data/config.json', config, 'Update checklist');
     setStatus('Checklist saved.');
+  } catch (err) {
+    setStatus(err.message, true);
+  }
+});
+
+document.getElementById('tagsForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  try {
+    const config = await window.Store.readData('data/config.json');
+    const lines = document.getElementById('tagsItems').value.split('\n').map((s) => s.trim()).filter(Boolean);
+    const tags = {};
+    lines.forEach((line) => {
+      const [key, label, color] = line.split('|').map((s) => s.trim());
+      if (key) tags[key] = { label: label || key, color: color || '#5b8cff' };
+    });
+    config.tags = tags;
+    await window.Store.writeData('data/config.json', config, 'Update tags');
+    setStatus('Tags saved.');
   } catch (err) {
     setStatus(err.message, true);
   }

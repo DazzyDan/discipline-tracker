@@ -1,5 +1,6 @@
 let GOALS = [];
 let SESSIONS = [];
+let CONFIG = null;
 
 function fmtMinutes(min) {
   const h = Math.floor(min / 60);
@@ -14,6 +15,79 @@ function goalById(id) {
 
 function escapeAttr(str) {
   return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+function buildTagPicker(selectedKeys) {
+  const el = document.createElement('div');
+  el.className = 'tag-picker';
+  const selected = new Set(selectedKeys || []);
+  const tagKeys = Object.keys((CONFIG && CONFIG.tags) || {});
+  tagKeys.forEach((key) => {
+    const tag = CONFIG.tags[key];
+    const chip = document.createElement('span');
+    chip.className = `tag-chip${selected.has(key) ? ' selected' : ''}`;
+    chip.style.background = tag.color;
+    chip.textContent = tag.label;
+    chip.addEventListener('click', () => {
+      if (selected.has(key)) { selected.delete(key); chip.classList.remove('selected'); }
+      else { selected.add(key); chip.classList.add('selected'); }
+    });
+    el.appendChild(chip);
+  });
+  return { el, getSelected: () => Array.from(selected) };
+}
+
+function tagChipsDisplay(tags) {
+  return (tags || []).map((key) => {
+    const tag = CONFIG && CONFIG.tags && CONFIG.tags[key];
+    if (!tag) return '';
+    return `<span class="tag-chip" style="background:${tag.color}">${tag.label}</span>`;
+  }).join('');
+}
+
+function quickAddTaskBar(weekId, onAdd) {
+  const wrap = document.createElement('div');
+  wrap.className = 'card';
+  wrap.innerHTML = `
+    <div class="quick-add-row">
+      <input type="text" id="quickAddInput" placeholder="Add a task and press Enter…" data-requires-token>
+      <button type="button" id="quickAddBtn" class="btn" data-requires-token>Add</button>
+    </div>
+    <div id="quickAddTagsSlot"></div>
+  `;
+  const picker = buildTagPicker([]);
+  wrap.querySelector('#quickAddTagsSlot').appendChild(picker.el);
+
+  async function submit() {
+    const input = wrap.querySelector('#quickAddInput');
+    const title = input.value.trim();
+    if (!title) return;
+    const id = `t_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    const node = {
+      id, level: 'day', parentId: weekId,
+      period: window.DateUtils.todayISO(),
+      title,
+      firstStep: title,
+      checklistId: 'default',
+      plannedMinutes: 25,
+      status: 'not_started',
+      tags: picker.getSelected(),
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+    };
+    try {
+      const updated = [...GOALS, node];
+      await window.Store.writeData('data/goals.json', { goals: updated }, `Add task: ${title}`);
+      onAdd();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+  wrap.querySelector('#quickAddBtn').addEventListener('click', submit);
+  wrap.querySelector('#quickAddInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); submit(); }
+  });
+  return wrap;
 }
 
 function params() {
@@ -165,6 +239,8 @@ function editTaskForm(task, onSaved) {
     <input type="text" name="firstStep" value="${escapeAttr(task.firstStep)}" required>
     <label>Planned minutes</label>
     <input type="number" name="plannedMinutes" value="${task.plannedMinutes || 0}">
+    <label>Tags</label>
+    <div id="editTagsSlot"></div>
     <label>Status</label>
     <select name="status">
       <option value="not_started">not_started</option>
@@ -177,6 +253,8 @@ function editTaskForm(task, onSaved) {
     </div>
   `;
   form.querySelector('select[name="status"]').value = task.status;
+  const tagPicker = buildTagPicker(task.tags);
+  form.querySelector('#editTagsSlot').appendChild(tagPicker.el);
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(form);
@@ -186,6 +264,7 @@ function editTaskForm(task, onSaved) {
       title: fd.get('title'),
       firstStep: fd.get('firstStep'),
       plannedMinutes: Number(fd.get('plannedMinutes')) || 0,
+      tags: tagPicker.getSelected(),
       status: newStatus,
       completedAt: newStatus === 'done' ? (g.completedAt || new Date().toISOString()) : null,
     } : g));
@@ -262,26 +341,45 @@ function renderDayList(weekId) {
   ]);
   const content = document.getElementById('content');
   content.innerHTML = '';
+  content.appendChild(quickAddTaskBar(weekId, () => init()));
   const tasks = window.Rollup.nodesAtLevel(GOALS, 'day', weekId);
-  if (tasks.length === 0) content.appendChild(emptyState('No tasks yet — add one below.'));
+  if (tasks.length === 0) content.appendChild(emptyState('No tasks yet — add one above.'));
   tasks.forEach((t) => {
     const actual = window.Rollup.actualMinutesForTask(t.id, SESSIONS);
+    const isDone = t.status === 'done';
+    const tagsHtml = tagChipsDisplay(t.tags);
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <div class="task-row">
-        <div>
-          <strong>${t.title}</strong>
-          <div class="text-small text-dim">planned ${fmtMinutes(t.plannedMinutes || 0)} · actual ${fmtMinutes(actual)}
-            · <span class="badge">${t.status}</span></div>
+        <input type="checkbox" class="task-toggle" ${isDone ? 'checked' : ''} data-requires-token>
+        <div class="task-main">
+          <strong style="${isDone ? 'text-decoration:line-through; opacity:0.6' : ''}">${t.title}</strong>
+          ${tagsHtml ? `<div>${tagsHtml}</div>` : ''}
+          <div class="text-small text-dim">planned ${fmtMinutes(t.plannedMinutes || 0)} · actual ${fmtMinutes(actual)}</div>
         </div>
-        <div style="display:flex; gap:6px">
+        <div class="task-actions">
           <a class="btn" href="ritual.html?taskId=${encodeURIComponent(t.id)}">Start</a>
           <button type="button" class="btn btn-secondary editToggleBtn" data-requires-token>Edit</button>
         </div>
       </div>
     `;
     content.appendChild(card);
+    card.querySelector('.task-toggle').addEventListener('change', async (e) => {
+      const newStatus = e.target.checked ? 'done' : 'not_started';
+      const updated = GOALS.map((g) => (g.id === t.id ? {
+        ...g,
+        status: newStatus,
+        completedAt: newStatus === 'done' ? new Date().toISOString() : null,
+      } : g));
+      try {
+        await window.Store.writeData('data/goals.json', { goals: updated }, `${newStatus === 'done' ? 'Complete' : 'Reopen'} task: ${t.title}`);
+        init();
+      } catch (err) {
+        alert(err.message);
+        e.target.checked = !e.target.checked;
+      }
+    });
     const editForm = editTaskForm(t, () => init());
     content.appendChild(editForm);
     card.querySelector('.editToggleBtn').addEventListener('click', () => {
@@ -289,7 +387,6 @@ function renderDayList(weekId) {
     });
     logTimeForm(t, () => init()).then((f) => content.appendChild(f));
   });
-  content.appendChild(addNodeForm('day', weekId, () => init()));
 }
 
 function emptyState(msg) {
@@ -304,12 +401,14 @@ async function init() {
   const content = document.getElementById('content');
   content.textContent = 'Loading…';
   try {
-    const [goalsData, logsData] = await Promise.all([
+    const [goalsData, logsData, configData] = await Promise.all([
       window.Store.readData('data/goals.json'),
       window.Store.readData('data/logs.json'),
+      window.Store.readData('data/config.json'),
     ]);
     GOALS = goalsData.goals;
     SESSIONS = logsData.sessions;
+    CONFIG = configData;
   } catch (err) {
     content.textContent = `Failed to load data: ${err.message}`;
     return;
@@ -323,6 +422,7 @@ async function init() {
   else if (view === 'week') renderWeekList(id);
   else if (view === 'day') renderDayList(id);
   else renderYearList();
+  window.Auth.applyReadOnlyState();
 }
 
 init();

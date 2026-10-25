@@ -167,6 +167,7 @@ async function init() {
     content.appendChild(renderPlannedVsActual(goalsData.goals, logsData.sessions));
     content.appendChild(renderHistograms(logsData.sessions));
     content.appendChild(renderReflection(reflectionsData.entries));
+    window.Auth.applyReadOnlyState();
   } catch (err) {
     content.textContent = `Failed to load data: ${err.message}`;
   }

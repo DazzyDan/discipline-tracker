@@ -10,6 +10,12 @@
       ]
     }
   },
+  "tags": {
+    "note": { "label": "Note", "color": "#5b8cff" },
+    "subtask": { "label": "Subtask", "color": "#b15bff" },
+    "quick-win": { "label": "Quick win", "color": "#3fb97f" },
+    "important": { "label": "Important", "color": "#e2574c" }
+  },
   "vision": {
     "images": [
       { "src": "images/vision/IMG_3501.JPG", "caption": "" },

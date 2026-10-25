@@ -96,13 +96,58 @@ label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 
 
 .task-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
 }
 
 .task-row:last-child { border-bottom: none; }
+
+.task-toggle {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.task-row .task-main { flex: 1; min-width: 0; }
+.task-row .task-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.tag-chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  color: #fff;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.tag-picker {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0 12px;
+}
+
+.tag-picker .tag-chip {
+  cursor: pointer;
+  opacity: 0.4;
+  user-select: none;
+}
+
+.tag-picker .tag-chip.selected { opacity: 1; }
+
+.quick-add-row {
+  display: flex;
+  gap: 8px;
+}
+
+.quick-add-row input[type="text"] { margin-bottom: 0; flex: 1; }
 
 .badge {
   display: inline-block;

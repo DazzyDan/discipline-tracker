@@ -45,6 +45,18 @@
     </div>
 
     <div class="card">
+      <h3>Tags</h3>
+      <p class="text-small text-dim">
+        Color-coded labels for tasks (shown on the Tracker and in the quick-add tag picker).
+        One per line as <code>key | Label | #color</code> — e.g. <code>note | Note | #5b8cff</code>.
+      </p>
+      <form id="tagsForm">
+        <textarea id="tagsItems" rows="5"></textarea>
+        <button type="submit" class="btn" data-requires-token>Save tags</button>
+      </form>
+    </div>
+
+    <div class="card">
       <h3>Vision wall images</h3>
       <p class="text-small text-dim">
         First, add your image files to <code>images/vision/</code> via a normal git commit or the GitHub
