@@ -8,17 +8,17 @@
 }
 
 .heatmap-wrap svg rect.heat-level-0 { fill: var(--border); }
-.heatmap-wrap svg rect.heat-level-1 { fill: #1b3a2a; }
-.heatmap-wrap svg rect.heat-level-2 { fill: #2a6b45; }
-.heatmap-wrap svg rect.heat-level-3 { fill: #3fa863; }
-.heatmap-wrap svg rect.heat-level-4 { fill: #56d47f; }
+.heatmap-wrap svg rect.heat-level-1 { fill: #3a2e1c; }
+.heatmap-wrap svg rect.heat-level-2 { fill: #6b4f26; }
+.heatmap-wrap svg rect.heat-level-3 { fill: #96682a; }
+.heatmap-wrap svg rect.heat-level-4 { fill: #c08a3e; }
 
 @media (prefers-color-scheme: light) {
   .heatmap-wrap svg rect.heat-level-0 { fill: var(--border); }
-  .heatmap-wrap svg rect.heat-level-1 { fill: #c7e8d1; }
-  .heatmap-wrap svg rect.heat-level-2 { fill: #8fd3a3; }
-  .heatmap-wrap svg rect.heat-level-3 { fill: #4fb876; }
-  .heatmap-wrap svg rect.heat-level-4 { fill: #239852; }
+  .heatmap-wrap svg rect.heat-level-1 { fill: #e8dcc4; }
+  .heatmap-wrap svg rect.heat-level-2 { fill: #d4bb86; }
+  .heatmap-wrap svg rect.heat-level-3 { fill: #b08c42; }
+  .heatmap-wrap svg rect.heat-level-4 { fill: #8a6324; }
 }
 
 .heatmap-legend {
@@ -33,6 +33,5 @@
 .heatmap-legend .swatch {
   width: 11px;
   height: 11px;
-  border-radius: 2px;
   display: inline-block;
 }

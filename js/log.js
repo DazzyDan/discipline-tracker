@@ -9,10 +9,10 @@ async function init() {
     const activeDays = window.Rollup.activeDateSet(sessions).size;
 
     statsEl.innerHTML = `
-      <strong>${current}</strong>-day current streak &nbsp;·&nbsp;
-      <strong>${longest}</strong>-day longest streak &nbsp;·&nbsp;
-      <strong>${activeDays}</strong> active days &nbsp;·&nbsp;
-      <strong>${Math.round(totalMinutes / 60)}</strong> total hours logged
+      <strong class="mono">${current}</strong>-day current streak &nbsp;·&nbsp;
+      <strong class="mono">${longest}</strong>-day longest streak &nbsp;·&nbsp;
+      <strong class="mono">${activeDays}</strong> active days &nbsp;·&nbsp;
+      <strong class="mono">${Math.round(totalMinutes / 60)}</strong> total hours logged
     `;
 
     window.Heatmap.renderHeatmap(heatmapEl, sessions, 53);

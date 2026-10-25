@@ -1,17 +1,19 @@
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
 }
 
 .photo-grid figure {
   margin: 0;
-  position: relative;
+  border: 1px solid var(--accent);
+  background: var(--bg-elevated);
+}
+
+.photo-grid .photo-frame {
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: var(--radius);
-  background: var(--bg-elevated);
 }
 
 .photo-grid img {
@@ -22,12 +24,13 @@
 }
 
 .photo-grid figcaption {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 6px 8px;
-  font-size: 12px;
-  background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
-  color: #fff;
+  padding: 7px 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
 }
 
 .empty-state {

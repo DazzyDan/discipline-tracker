@@ -13,19 +13,19 @@
   "tags": {
     "note": {
       "label": "Note",
-      "color": "#5b8cff"
+      "color": "#6b86a3"
     },
     "subtask": {
       "label": "Subtask",
-      "color": "#b15bff"
+      "color": "#9577a6"
     },
     "quick-win": {
       "label": "Quick win",
-      "color": "#3fb97f"
+      "color": "#7c9473"
     },
     "important": {
       "label": "Important",
-      "color": "#e2574c"
+      "color": "#c56e58"
     }
   },
   "vision": {

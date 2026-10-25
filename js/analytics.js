@@ -2,6 +2,7 @@ function fmtMinutes(min) {
   const h = Math.floor(min / 60);
   const m = Math.round(min % 60);
   if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
   return `${h}h ${m}m`;
 }
 
@@ -89,7 +90,7 @@ function renderStreaks(sessions) {
   const section = document.createElement('div');
   section.className = 'card';
   section.innerHTML = `<h3>Streaks</h3>
-    <p><strong>${current}</strong> day current streak · <strong>${longest}</strong> day longest streak</p>
+    <p><strong class="mono">${current}</strong> day current streak · <strong class="mono">${longest}</strong> day longest streak</p>
     <p class="text-small"><a href="log.html">View full public log →</a></p>`;
   return section;
 }

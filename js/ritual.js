@@ -34,7 +34,7 @@ function renderTaskPicker() {
     const tagsHtml = (t.tags || []).map((key) => {
       const tag = CONFIG.tags && CONFIG.tags[key];
       if (!tag) return '';
-      return `<span class="tag-chip" style="background:${tag.color}">${tag.label}</span>`;
+      return `<span class="tag-chip" style="--chip-color:${tag.color}">${tag.label}</span>`;
     }).join('');
     const card = document.createElement('div');
     card.className = 'card';

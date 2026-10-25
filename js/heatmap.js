@@ -59,7 +59,7 @@ function renderHeatmap(container, sessions, weeks = 53) {
       y: row * (CELL + GAP),
       width: CELL,
       height: CELL,
-      rx: 2,
+      rx: 0,
       class: `heat-level-${level}`,
       'data-date': dateStr,
     });

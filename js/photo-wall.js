@@ -1,6 +1,12 @@
 async function init() {
   const wall = document.getElementById('photo-wall');
   const teaser = document.getElementById('streak-teaser');
+  const masthead = document.getElementById('masthead-date');
+  if (masthead) {
+    masthead.textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'short', month: 'short', day: 'numeric',
+    });
+  }
   try {
     const [configData, logsData] = await Promise.all([
       window.Store.readData('data/config.json'),
@@ -8,6 +14,8 @@ async function init() {
     ]);
 
     const { current } = window.Rollup.computeStreaks(logsData.sessions);
+    const streakEl = document.getElementById('masthead-streak');
+    if (streakEl) streakEl.textContent = `streak ${String(current).padStart(3, '0')}`;
     teaser.textContent = current > 0
       ? `${current}-day streak. Don't break it today.`
       : "No active streak right now — today's a good day to start one.";
@@ -25,10 +33,13 @@ async function init() {
     grid.className = 'photo-grid';
     images.forEach((img) => {
       const fig = document.createElement('figure');
+      const frame = document.createElement('div');
+      frame.className = 'photo-frame';
       const image = document.createElement('img');
       image.src = img.src;
       image.alt = img.caption || '';
-      fig.appendChild(image);
+      frame.appendChild(image);
+      fig.appendChild(frame);
       if (img.caption) {
         const cap = document.createElement('figcaption');
         cap.textContent = img.caption;

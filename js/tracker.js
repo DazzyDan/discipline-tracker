@@ -6,6 +6,7 @@ function fmtMinutes(min) {
   const h = Math.floor(min / 60);
   const m = Math.round(min % 60);
   if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
   return `${h}h ${m}m`;
 }
 
@@ -26,7 +27,7 @@ function buildTagPicker(selectedKeys) {
     const tag = CONFIG.tags[key];
     const chip = document.createElement('span');
     chip.className = `tag-chip${selected.has(key) ? ' selected' : ''}`;
-    chip.style.background = tag.color;
+    chip.style.setProperty('--chip-color', tag.color);
     chip.textContent = tag.label;
     chip.addEventListener('click', () => {
       if (selected.has(key)) { selected.delete(key); chip.classList.remove('selected'); }
@@ -41,7 +42,7 @@ function tagChipsDisplay(tags) {
   return (tags || []).map((key) => {
     const tag = CONFIG && CONFIG.tags && CONFIG.tags[key];
     if (!tag) return '';
-    return `<span class="tag-chip" style="background:${tag.color}">${tag.label}</span>`;
+    return `<span class="tag-chip" style="--chip-color:${tag.color}">${tag.label}</span>`;
   }).join('');
 }
 
