@@ -33,7 +33,7 @@
       "firstStep": "Open data/goals.json and change this title",
       "checklistId": "default",
       "plannedMinutes": 30,
-      "status": "not_started",
+      "status": "in_progress",
       "createdAt": "2026-10-25T00:00:00Z",
       "completedAt": null
     }
