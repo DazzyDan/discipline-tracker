@@ -11,18 +11,45 @@
     }
   },
   "tags": {
-    "note": { "label": "Note", "color": "#5b8cff" },
-    "subtask": { "label": "Subtask", "color": "#b15bff" },
-    "quick-win": { "label": "Quick win", "color": "#3fb97f" },
-    "important": { "label": "Important", "color": "#e2574c" }
+    "note": {
+      "label": "Note",
+      "color": "#5b8cff"
+    },
+    "subtask": {
+      "label": "Subtask",
+      "color": "#b15bff"
+    },
+    "quick-win": {
+      "label": "Quick win",
+      "color": "#3fb97f"
+    },
+    "important": {
+      "label": "Important",
+      "color": "#e2574c"
+    }
   },
   "vision": {
     "images": [
-      { "src": "images/vision/IMG_3501.JPG", "caption": "" },
-      { "src": "images/vision/a4fd7f_c30cbacf1b184468acb81de80c8c3c57~mv2.avif", "caption": "" },
-      { "src": "images/vision/Capture d’écran 2026-05-21 à 22.15.07.png", "caption": "" },
-      { "src": "images/vision/_ copie 2.jpeg", "caption": "" },
-      { "src": "images/vision/_ (1) copie 2.jpeg", "caption": "" }
+      {
+        "src": "images/vision/IMG_3501.JPG",
+        "caption": ""
+      },
+      {
+        "src": "images/vision/a4fd7f_c30cbacf1b184468acb81de80c8c3c57~mv2.avif",
+        "caption": ""
+      },
+      {
+        "src": "images/vision/Capture d’écran 2026-05-21 à 22.15.07.png",
+        "caption": ""
+      },
+      {
+        "src": "images/vision/_ copie 2.jpeg",
+        "caption": ""
+      },
+      {
+        "src": "images/vision/_ (1) copie 2.jpeg",
+        "caption": ""
+      }
     ]
   }
 }
