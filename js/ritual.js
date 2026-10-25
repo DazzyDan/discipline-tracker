@@ -39,9 +39,17 @@ function renderTaskPicker() {
     btn.href = `ritual.html?taskId=${encodeURIComponent(t.id)}`;
     btn.textContent = 'Start this';
     btn.style.marginTop = '8px';
+    btn.style.marginRight = '8px';
     btn.style.display = 'inline-block';
+    const editLink = document.createElement('a');
+    editLink.className = 'btn btn-secondary';
+    editLink.href = `tracker.html?view=day&id=${encodeURIComponent(t.parentId)}`;
+    editLink.textContent = 'Edit this task';
+    editLink.style.marginTop = '8px';
+    editLink.style.display = 'inline-block';
     card.appendChild(document.createElement('br'));
     card.appendChild(btn);
+    card.appendChild(editLink);
     c.appendChild(card);
   });
 }

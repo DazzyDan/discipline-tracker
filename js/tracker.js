@@ -12,6 +12,10 @@ function goalById(id) {
   return GOALS.find((g) => g.id === id);
 }
 
+function escapeAttr(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
 function params() {
   return new URLSearchParams(window.location.search);
 }
@@ -149,6 +153,63 @@ async function logTimeForm(task, onLogged) {
   return wrap;
 }
 
+function editTaskForm(task, onSaved) {
+  const wrap = document.createElement('div');
+  wrap.className = 'card';
+  wrap.hidden = true;
+  const form = document.createElement('form');
+  form.innerHTML = `
+    <label>Title</label>
+    <input type="text" name="title" value="${escapeAttr(task.title)}" required>
+    <label>First step (the tiny literal action, not the big task)</label>
+    <input type="text" name="firstStep" value="${escapeAttr(task.firstStep)}" required>
+    <label>Planned minutes</label>
+    <input type="number" name="plannedMinutes" value="${task.plannedMinutes || 0}">
+    <label>Status</label>
+    <select name="status">
+      <option value="not_started">not_started</option>
+      <option value="in_progress">in_progress</option>
+      <option value="done">done</option>
+    </select>
+    <div style="display:flex; gap:8px; margin-top:8px">
+      <button type="submit" class="btn" data-requires-token>Save</button>
+      <button type="button" class="btn btn-danger" id="deleteBtn_${task.id}" data-requires-token>Delete task</button>
+    </div>
+  `;
+  form.querySelector('select[name="status"]').value = task.status;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const newStatus = fd.get('status');
+    const updated = GOALS.map((g) => (g.id === task.id ? {
+      ...g,
+      title: fd.get('title'),
+      firstStep: fd.get('firstStep'),
+      plannedMinutes: Number(fd.get('plannedMinutes')) || 0,
+      status: newStatus,
+      completedAt: newStatus === 'done' ? (g.completedAt || new Date().toISOString()) : null,
+    } : g));
+    try {
+      await window.Store.writeData('data/goals.json', { goals: updated }, `Edit task: ${fd.get('title')}`);
+      onSaved();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+  form.querySelector(`#deleteBtn_${task.id}`).addEventListener('click', async () => {
+    if (!confirm(`Delete "${task.title}"? This can't be undone.`)) return;
+    const updated = GOALS.filter((g) => g.id !== task.id);
+    try {
+      await window.Store.writeData('data/goals.json', { goals: updated }, `Delete task: ${task.title}`);
+      onSaved();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+  wrap.appendChild(form);
+  return wrap;
+}
+
 function renderYearList() {
   renderBreadcrumb([{ label: 'Years', href: linkTo('years') }]);
   const content = document.getElementById('content');
@@ -214,10 +275,18 @@ function renderDayList(weekId) {
           <div class="text-small text-dim">planned ${fmtMinutes(t.plannedMinutes || 0)} · actual ${fmtMinutes(actual)}
             · <span class="badge">${t.status}</span></div>
         </div>
-        <a class="btn" href="ritual.html?taskId=${encodeURIComponent(t.id)}">Start</a>
+        <div style="display:flex; gap:6px">
+          <a class="btn" href="ritual.html?taskId=${encodeURIComponent(t.id)}">Start</a>
+          <button type="button" class="btn btn-secondary editToggleBtn" data-requires-token>Edit</button>
+        </div>
       </div>
     `;
     content.appendChild(card);
+    const editForm = editTaskForm(t, () => init());
+    content.appendChild(editForm);
+    card.querySelector('.editToggleBtn').addEventListener('click', () => {
+      editForm.hidden = !editForm.hidden;
+    });
     logTimeForm(t, () => init()).then((f) => content.appendChild(f));
   });
   content.appendChild(addNodeForm('day', weekId, () => init()));
